@@ -267,9 +267,12 @@ class Metadata(MusicManagerCall):
 
 		if 'date' in metadata.tags:
 			date = metadata.tags.date[0]
-			year = pendulum.parse(date).year
-
-			track.year = year
+			try:
+				year = pendulum.parse(date).year
+			except (pendulum.parsing.exceptions.ParserError, ValueError):
+				pass
+			else:
+				track.year = year
 
 		if 'genre' in metadata.tags:
 			track.genre = metadata.tags.genre[0]
